@@ -6,6 +6,7 @@ const sections = [
   { id: "features", label: "核心功能" },
   { id: "pages", label: "页面说明" },
   { id: "pages-plan-mode", label: "  ↳ /generating Plan 交互流程", sub: true },
+  { id: "pages-select-edit", label: "  ↳ /generating 选择编辑模式", sub: true },
   { id: "flow", label: "用户流程" },
   { id: "tech", label: "技术架构" },
   { id: "tech-two-phase", label: "  ↳ 两阶段生成", sub: true },
@@ -66,8 +67,8 @@ export default function PRDPage() {
         </nav>
 
         <div className="mt-auto pt-6 border-t border-gray-100">
-          <p className="text-[10px] text-gray-400 px-2">文档版本 v1.0</p>
-          <p className="text-[10px] text-gray-400 px-2 mt-0.5">更新于 2026-04-09</p>
+          <p className="text-[10px] text-gray-400 px-2">文档版本 v1.1</p>
+          <p className="text-[10px] text-gray-400 px-2 mt-0.5">更新于 2026-04-10</p>
         </div>
       </aside>
 
@@ -92,7 +93,7 @@ export default function PRDPage() {
               {[
                 { label: "文档版本", value: "v1.0" },
                 { label: "产品阶段", value: "MVP" },
-                { label: "更新日期", value: "2026-04-09" },
+                { label: "更新日期", value: "2026-04-10" },
                 { label: "负责人", value: "产品团队" },
               ].map((item) => (
                 <div key={item.label} className="flex items-center gap-1.5 text-xs text-gray-500">
@@ -277,6 +278,18 @@ export default function PRDPage() {
                     ],
                   },
                   {
+                    module: "选择编辑",
+                    priority: "P1",
+                    features: [
+                      { name: "选择编辑模式入口", desc: "命令框左下角「选择编辑」按钮，点击后开启元素选择模式，预览区顶部展示橙色提示横幅" },
+                      { name: "元素高亮选中", desc: "模式激活后鼠标移入可编辑元素时出现橙色描边高亮，元素左上角展示类型标签（如「标题」「CTA 按钮」「产品卡片」）" },
+                      { name: "修改文字", desc: "点击元素后弹出操作面板，切换到「修改文字」Tab，在多行文本框中直接修改，点击「应用」立即生效" },
+                      { name: "编辑链接", desc: "切换到「编辑链接」Tab，输入外部链接（https://）或站内路径（/page），应用后保存到该元素" },
+                      { name: "删除元素", desc: "切换到「删除」Tab，二次确认后从预览中移除该元素，支持品牌名、导航项、按钮、Hero 区内容、卡片、页脚等所有主要元素" },
+                      { name: "退出选择编辑", desc: "点击顶部横幅的「退出」按钮或再次点击「选择编辑」按钮关闭模式，恢复正常交互" },
+                    ],
+                  },
+                  {
                     module: "代码查看",
                     priority: "P1",
                     features: [
@@ -358,14 +371,15 @@ export default function PRDPage() {
                   {
                     route: "/generating",
                     name: "原型生成页",
-                    desc: "核心功能页面，承载原型生成、预览、代码查看、AI 对话迭代全流程。包含 Plan 模式与普通模式两种工作流。",
+                    desc: "核心功能页面，承载原型生成、预览、代码查看、AI 对话迭代全流程。包含 Plan 模式与普通模式两种工作流，以及选择编辑模式用于直接修改原型内容。",
                     elements: [
                       "顶部导航栏：返回按钮、项目名（可内联编辑）、地址栏（多页面切换下拉）、预览/代码 Tab、刷新/分享/版本历史/复制项目按钮、用户头像",
-                      "主区域左侧：原型预览面板（PC 全屏 / 移动端手机壳包裹）",
+                      "主区域左侧：原型预览面板（PC 全屏 / 移动端手机壳包裹），选择编辑模式下顶部显示橙色提示横幅",
                       "主区域右侧：AI 工作台面板（消息列表 + 输入框）或版本历史面板（切换）",
                       "AI 工作台：用户消息气泡（深色）+ AI 执行步骤卡片（含 Todo 动画）+ 完成后的回复 + 版本气泡",
                       "版本气泡：展示版本号和时间，支持下拉菜单（回滚/预览）",
-                      "输入框：支持文字、粘贴图片、上传文档，生成中显示停止按钮",
+                      "输入框底部工具栏：图片上传、文档上传、「选择编辑」按钮（激活时高亮橙色）、发送/停止按钮",
+                      "选择编辑：开启后预览区元素 hover 时显示橙色描边 + 类型标签，点击元素弹出操作浮层（修改文字 / 编辑链接 / 删除三个 Tab）",
                       "生成进度：读取文件 → AI 思考 → 创建/修改文件 → 构建检查，逐步展示",
                     ],
                   },
@@ -617,6 +631,276 @@ export default function PRDPage() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* ── 4-B. 选择编辑模式专项说明 ── */}
+            <section id="pages-select-edit">
+              <div className="flex items-center gap-2.5 mb-5">
+                <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-orange-50">
+                  <i className="ri-cursor-line text-sm" style={{ color: "#f97316" }} />
+                </div>
+                <h2 className="text-base font-bold text-gray-900">4-B. /generating 页：选择编辑模式 UI 交互流程</h2>
+                <div className="flex-1 h-px bg-gray-100 ml-2" />
+              </div>
+
+              <div className="flex flex-col gap-5">
+                {/* 功能概述 */}
+                <div className="bg-white rounded-xl border border-gray-100 px-5 py-5">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">功能定位</p>
+                  <p className="text-sm text-gray-600 leading-7 mb-4">
+                    选择编辑模式是对 AI 对话式修改的<strong>轻量补充路径</strong>——用户无需描述需求、等待 AI 理解，而是直接在预览中「点哪改哪」，即时完成文字修改、链接绑定和元素删除三类操作。适用于不涉及结构变更的精细化内容微调。
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      {
+                        icon: "ri-cursor-line",
+                        title: "直接点选",
+                        desc: "无需文字描述，鼠标移到预览里的任意元素上即可高亮选中，直接操作",
+                        badge: "核心体验",
+                        badgeColor: "bg-orange-100 text-orange-600",
+                      },
+                      {
+                        icon: "ri-time-line",
+                        title: "实时生效",
+                        desc: "三种操作（修改文字 / 编辑链接 / 删除）点击应用后立即在预览中体现，无需重新生成",
+                        badge: "即时反馈",
+                        badgeColor: "bg-green-100 text-green-700",
+                      },
+                      {
+                        icon: "ri-chat-ai-line",
+                        title: "与 AI 互补",
+                        desc: "选择编辑只处理内容层改动；结构性变更（新增模块、调整布局）仍需通过 AI 对话完成",
+                        badge: "定位补充",
+                        badgeColor: "bg-gray-100 text-gray-600",
+                      },
+                    ].map((item) => (
+                      <div key={item.title} className="bg-gray-50 rounded-xl border border-gray-100 p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-white border border-gray-100">
+                            <i className={`${item.icon} text-gray-500 text-xs`} />
+                          </div>
+                          <span className="text-xs font-bold text-gray-800">{item.title}</span>
+                          <span className={`ml-auto text-[10px] px-1.5 py-0.5 rounded-full font-medium ${item.badgeColor}`}>{item.badge}</span>
+                        </div>
+                        <p className="text-xs text-gray-500 leading-5">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 完整交互流程 */}
+                <div className="bg-white rounded-xl border border-gray-100 px-5 py-5">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">完整交互流程（五步）</p>
+                  <div className="flex flex-col gap-0">
+                    {[
+                      {
+                        step: "Step 1",
+                        title: "激活选择编辑模式",
+                        color: "bg-orange-100 text-orange-600",
+                        lineColor: "bg-orange-200",
+                        ui: [
+                          "命令框底部工具栏左侧有「选择编辑」按钮（光标图标 + 文字标签）",
+                          "点击后按钮变为橙色高亮激活态（bg-orange-100 text-orange-600）",
+                          "预览区顶部出现全宽橙色提示横幅：「选择编辑模式已开启 — 点击页面中的元素进行编辑」，右侧有「退出」按钮",
+                          "命令框输入区域同时出现橙色提示条：「点击预览中的元素进行编辑」+ 退出链接",
+                        ],
+                        preview: "橙色横幅 + 按钮激活态",
+                      },
+                      {
+                        step: "Step 2",
+                        title: "悬停元素高亮",
+                        color: "bg-orange-100 text-orange-600",
+                        lineColor: "bg-orange-200",
+                        ui: [
+                          "鼠标移入可编辑元素区域时，该元素出现 2px 橙色描边（outline: 2px solid #f97316）",
+                          "元素左上角浮现类型标签（如「品牌名」「导航项」「标题」「主按钮」「产品卡片」「数据项」「版权信息」等），标签为橙色背景白色文字，10px 字体",
+                          "鼠标指针变为 pointer（crosshair 叠加层在 pointer-events: none 的覆盖层上），不影响原始元素点击区域",
+                          "支持高亮的元素类型：品牌名、导航项目（6 个）、登录/CTA 按钮、Hero 区徽章/标题/副标题/主次按钮/标签（3 个）、核心产品卡片（8 个）、数据统计项（4 个）、解决方案卡片（3 个）、页脚版权文字/链接（4 个）",
+                        ],
+                        preview: "橙色描边 + 类型标签浮层",
+                      },
+                      {
+                        step: "Step 3",
+                        title: "点击选中元素",
+                        color: "bg-amber-100 text-amber-700",
+                        lineColor: "bg-amber-200",
+                        ui: [
+                          "点击高亮元素后，在元素正下方弹出「编辑元素」操作浮层（宽 252px，白色背景，圆角卡片，多层阴影）",
+                          "浮层顶部展示「编辑元素」标题和右上角「×」关闭按钮",
+                          "三个操作 Tab：「修改文字」「编辑链接」「删除」，左侧图标 + 文字，激活态对应橙色或红色高亮",
+                          "浮层位置：水平居中于被选元素，垂直位于元素下方 6px；当超出容器右边界时自动向左偏移",
+                          "点击浮层外部区域自动关闭",
+                        ],
+                        preview: "操作浮层 + 三个 Tab",
+                      },
+                      {
+                        step: "Step 4",
+                        title: "执行三种操作",
+                        color: "bg-green-100 text-green-700",
+                        lineColor: "bg-green-200",
+                        ui: [
+                          "【修改文字】默认激活 Tab；多行文本框展示当前元素文字内容，用户直接修改；点击「应用」后该元素文字立即更新，浮层关闭",
+                          "【编辑链接】单行输入框，placeholder 为「https://example.com 或 /page」；下方有说明文字「支持外部链接（https://）或站内路径（/page）」；点击「应用」保存链接到元素，浮层关闭",
+                          "【删除】默认展示「确认删除此元素？该操作将从预览中移除此内容。」说明文字，点「删除」进入二次确认态；二次确认展示「确认要删除吗？」+「算了」/「确认删除」；确认后元素从预览中移除（含淡出动画），浮层关闭",
+                          "三个 Tab 切换时重置对应状态（取消删除确认态）",
+                          "所有操作均有「取消」按钮，点击直接关闭浮层不做任何改动",
+                        ],
+                        preview: "文字编辑 / 链接输入 / 二次确认删除",
+                      },
+                      {
+                        step: "Step 5",
+                        title: "退出选择编辑模式",
+                        color: "bg-gray-100 text-gray-600",
+                        lineColor: "bg-transparent",
+                        ui: [
+                          "点击预览区顶部橙色横幅右侧的「退出」按钮",
+                          "或在命令框工具栏再次点击「选择编辑」按钮（Toggle 切换）",
+                          "或在命令框的橙色提示条点击「退出」文字链接",
+                          "退出后：橙色横幅消失、按钮恢复灰色未激活态、所有元素高亮消失、当前已打开的操作浮层同步关闭",
+                          "已应用的文字修改和链接编辑、已删除的元素在退出后依然保留（状态持久化到会话）",
+                        ],
+                        preview: "恢复正常浏览态",
+                      },
+                    ].map((s, i, arr) => (
+                      <div key={s.step} className="flex gap-4">
+                        <div className="flex flex-col items-center flex-shrink-0">
+                          <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${s.color}`}>
+                            {i + 1}
+                          </div>
+                          {i < arr.length - 1 && <div className={`w-0.5 flex-1 ${s.lineColor} my-1`} />}
+                        </div>
+                        <div className="pb-5 flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <p className="text-sm font-semibold text-gray-800">{s.title}</p>
+                            <span className="text-[10px] text-gray-400 bg-gray-50 border border-gray-100 rounded px-1.5 py-0.5 font-mono">{s.step}</span>
+                          </div>
+                          <div className="flex flex-col gap-1.5 mb-2.5">
+                            {s.ui.map((item, j) => (
+                              <div key={j} className="flex items-start gap-2 text-xs text-gray-600">
+                                <span className="flex-shrink-0 mt-1 w-1.5 h-1.5 rounded-full bg-orange-300" />
+                                {item}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="bg-gray-50 rounded-lg px-3 py-2 border border-gray-100 inline-flex items-center gap-1.5">
+                            <i className="ri-eye-line text-gray-400 text-xs" />
+                            <span className="text-[10px] text-gray-500 font-medium">视觉呈现：{s.preview}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 可编辑元素类型映射 */}
+                <div className="bg-white rounded-xl border border-gray-100 px-5 py-5">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">可编辑元素类型映射（PC 端首页）</p>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-gray-100">
+                          <th className="text-left text-gray-500 font-medium pb-2 pr-4 w-24">区域</th>
+                          <th className="text-left text-gray-500 font-medium pb-2 pr-4">元素标签名</th>
+                          <th className="text-left text-gray-500 font-medium pb-2 pr-4">支持修改文字</th>
+                          <th className="text-left text-gray-500 font-medium pb-2 pr-4">支持编辑链接</th>
+                          <th className="text-left text-gray-500 font-medium pb-2">支持删除</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-50">
+                        {[
+                          { area: "导航栏", els: "品牌名、导航项（×6）、登录按钮、CTA 按钮", text: "✓", link: "✓（按钮）", del: "✓（导航项）" },
+                          { area: "Hero 区", els: "徽章、标题、副标题、主按钮、次按钮、标签（×3）", text: "✓", link: "✓（按钮）", del: "✓（整 Hero 或单元素）" },
+                          { area: "核心产品", els: "区块标题、产品卡片（×8）", text: "✓", link: "—", del: "✓（单个卡片）" },
+                          { area: "数据统计", els: "数据项（×4，含数字和标签）", text: "✓", link: "—", del: "✓（单个统计项）" },
+                          { area: "解决方案", els: "区块标题、解决方案卡片（×3）", text: "✓", link: "—", del: "✓（单个卡片）" },
+                          { area: "页脚", els: "版权文字、页脚链接（×4）", text: "✓", link: "✓", del: "✓" },
+                        ].map((row, i) => (
+                          <tr key={i}>
+                            <td className="py-2.5 pr-4 font-medium text-gray-700 align-top">{row.area}</td>
+                            <td className="py-2.5 pr-4 text-gray-500 align-top leading-5">{row.els}</td>
+                            <td className="py-2.5 pr-4 text-green-600 font-medium align-top">{row.text}</td>
+                            <td className="py-2.5 pr-4 text-gray-500 align-top">{row.link}</td>
+                            <td className="py-2.5 text-red-400 align-top">{row.del}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* 与 AI 对话的能力边界对比 */}
+                <div className="bg-white rounded-xl border border-gray-100 px-5 py-5">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">选择编辑 vs AI 对话 · 能力边界对比</p>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-gray-100">
+                          <th className="text-left text-gray-500 font-medium pb-2 pr-4 w-36">场景</th>
+                          <th className="text-left text-gray-500 font-medium pb-2 pr-4">推荐方式</th>
+                          <th className="text-left text-gray-500 font-medium pb-2">原因</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-50">
+                        {[
+                          { scene: "修改按钮文字", way: "选择编辑", wayColor: "text-orange-600", reason: "直接点选应用，无需等待 AI 生成，秒级完成" },
+                          { scene: "修改某段描述文案", way: "选择编辑", wayColor: "text-orange-600", reason: "精确定位到目标元素，改完即看，不影响其他内容" },
+                          { scene: "绑定导航项跳转链接", way: "选择编辑", wayColor: "text-orange-600", reason: "编辑链接 Tab 直接输入地址，操作路径最短" },
+                          { scene: "删除某个产品卡片", way: "选择编辑", wayColor: "text-orange-600", reason: "二次确认删除，精准移除，不误伤其他元素" },
+                          { scene: "新增一个功能模块", way: "AI 对话", wayColor: "text-amber-700", reason: "涉及代码结构变更，AI 生成更可靠" },
+                          { scene: "调整整体配色 / 字体", way: "AI 对话", wayColor: "text-amber-700", reason: "影响全局样式，需要 AI 理解设计意图统一处理" },
+                          { scene: "重新设计页面布局", way: "AI 对话", wayColor: "text-amber-700", reason: "结构性大改，选择编辑无法覆盖此类需求" },
+                          { scene: "添加新的交互逻辑", way: "AI 对话", wayColor: "text-amber-700", reason: "需要写代码逻辑，超出纯内容编辑范畴" },
+                        ].map((row, i) => (
+                          <tr key={i}>
+                            <td className="py-2.5 pr-4 text-gray-700 align-top">{row.scene}</td>
+                            <td className={`py-2.5 pr-4 font-semibold align-top ${row.wayColor}`}>{row.way}</td>
+                            <td className="py-2.5 text-gray-500 leading-5 align-top">{row.reason}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* 状态管理与持久化 */}
+                <div className="bg-white rounded-xl border border-gray-100 px-5 py-5">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">前端状态管理要点</p>
+                  <div className="flex flex-col gap-3">
+                    {[
+                      {
+                        icon: "ri-map-pin-line",
+                        title: "elMap（文字/链接覆盖表）",
+                        desc: "以元素 ID 为 Key 的 Map，存储用户修改后的文字内容（key: id）和链接（key: id__href）。渲染时优先读取 elMap 中的值，无覆盖则显示默认值。Map 仅存在于当前会话的 React state 中，刷新页面后重置。",
+                      },
+                      {
+                        icon: "ri-delete-bin-3-line",
+                        title: "deletedIds（删除集合）",
+                        desc: "存储已被用户删除的元素 ID 集合（Set<string>）。渲染每个可删除元素前先检查 deletedIds，若存在则直接 return null，实现即时视觉隐藏。删除操作不修改底层代码，仅为预览层的视觉状态。",
+                      },
+                      {
+                        icon: "ri-information-line",
+                        title: "与 AI 生成的关系",
+                        desc: "选择编辑的修改只作用于预览层的 React state，不写入任何代码文件。当用户继续用 AI 对话触发重新生成时，AI 生成的新代码会覆盖预览，elMap 和 deletedIds 会被重置——这是预期行为，因为 AI 生成会从根本上更新原型内容。",
+                      },
+                      {
+                        icon: "ri-focus-3-line",
+                        title: "浮层位置计算",
+                        desc: "操作浮层位置根据被选元素的 getBoundingClientRect() 相对父容器（containerRef）计算，确保浮层始终显示在预览区内。水平方向：以元素中心对齐，超出右边界时左移。垂直方向：显示在元素下方 6px 处。",
+                      },
+                    ].map((item, i) => (
+                      <div key={i} className="flex gap-3 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <div className="w-7 h-7 flex items-center justify-center rounded-lg bg-white border border-gray-100 flex-shrink-0 mt-0.5">
+                          <i className={`${item.icon} text-gray-500 text-xs`} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold text-gray-800 mb-1">{item.title}</p>
+                          <p className="text-xs text-gray-500 leading-5">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
