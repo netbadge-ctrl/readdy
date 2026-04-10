@@ -267,7 +267,7 @@ function GeneratingCard({
         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center flex-shrink-0">
           <i className="ri-sparkling-line text-white" style={{ fontSize: "8px" }} />
         </div>
-        <span className="text-xs font-semibold text-gray-800">Readdy 正在完成您的需求</span>
+        <span className="text-xs font-semibold text-gray-800">金山云码 正在完成您的需求</span>
         {isActive && (
           <span className="flex items-center gap-0.5 ml-1">
             <span className="w-1 h-1 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0ms" }} />

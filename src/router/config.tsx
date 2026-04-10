@@ -4,6 +4,7 @@ import DashboardPage from "../pages/dashboard/page";
 import GeneratingPage from "../pages/generating/page";
 import SettingsPage from "../pages/settings/page";
 import QRLoginPage from "../pages/qr-login/page";
+import PRDPage from "../pages/prd/page";
 
 const routes: RouteObject[] = [
   {
@@ -21,6 +22,10 @@ const routes: RouteObject[] = [
   {
     path: "/settings",
     element: <SettingsPage />,
+  },
+  {
+    path: "/prd",
+    element: <PRDPage />,
   },
   {
     path: "*",
