@@ -46,6 +46,8 @@ interface Props {
   isFinished: boolean;
   elapsedTime: number;
   onNewVersion?: (versionId: number, time: string, description: string) => void;
+  selectEditMode?: boolean;
+  onToggleSelectMode?: () => void;
 }
 
 const formatTime = (s: number) => {
@@ -417,7 +419,7 @@ function AnimatedGeneratingMessage({
   );
 }
 
-export default function AIWorkbench({ initialPrompt, isFinished, elapsedTime, onNewVersion }: Props) {
+export default function AIWorkbench({ initialPrompt, isFinished, elapsedTime, onNewVersion, selectEditMode, onToggleSelectMode }: Props) {
   const [input, setInput] = useState("");
 
   // 版本号用 ref 追踪，每次生成完成后递增，绝不重置
@@ -837,6 +839,22 @@ export default function AIWorkbench({ initialPrompt, isFinished, elapsedTime, on
           </div>
         )}
 
+        {/* Select edit mode hint banner */}
+        {selectEditMode && (
+          <div className="flex items-center gap-2 mb-2 px-3 py-2 bg-orange-50 border border-orange-100 rounded-xl">
+            <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
+              <i className="ri-cursor-line text-orange-500 text-xs" />
+            </div>
+            <span className="text-xs text-orange-600 flex-1">点击预览中的元素进行编辑</span>
+            <button
+              onClick={onToggleSelectMode}
+              className="text-xs text-orange-400 hover:text-orange-600 cursor-pointer font-medium whitespace-nowrap"
+            >
+              退出
+            </button>
+          </div>
+        )}
+
         <div
           className={`bg-gray-50 rounded-2xl border transition-all overflow-hidden ${
             isFinished && !isReplying ? "border-gray-200 focus-within:border-gray-300" : "border-gray-100"
@@ -900,6 +918,22 @@ export default function AIWorkbench({ initialPrompt, isFinished, elapsedTime, on
               >
                 <i className="ri-attachment-line text-xs" />
               </button>
+
+              {/* Select Edit button */}
+              {isFinished && !isReplying && (
+                <button
+                  onClick={onToggleSelectMode}
+                  title="选择编辑"
+                  className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs transition-all cursor-pointer whitespace-nowrap ${
+                    selectEditMode
+                      ? "bg-orange-100 text-orange-600 hover:bg-orange-200"
+                      : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  <i className="ri-cursor-line" style={{ fontSize: "11px" }} />
+                  <span>选择编辑</span>
+                </button>
+              )}
             </div>
 
             {isReplying ? (

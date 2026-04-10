@@ -65,6 +65,7 @@ export default function GeneratingPage() {
   const [versions, setVersions] = useState<VersionRecord[]>([
     { versionId: 1, time: "今天 10:24", description: "初始生成：云服务官网，包含首页、关于我们、产品列表、联系我们四个页面", isActive: true },
   ]);
+  const [selectEditMode, setSelectEditMode] = useState(false);
 
   const newPageInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -402,7 +403,15 @@ export default function GeneratingPage() {
         {/* Preview / Code area */}
         <div className="flex-1 overflow-hidden min-w-0">
           {activeTab === "preview" ? (
-            <PreviewPanel isFinished={isFinished} activePage={activePage} siteName={currentName} platform={platform} onPageRename={(o, n) => setPages(prev => prev.map(p => p === o ? n : p))} />
+            <PreviewPanel
+              isFinished={isFinished}
+              activePage={activePage}
+              siteName={currentName}
+              platform={platform}
+              onPageRename={(o, n) => setPages(prev => prev.map(p => p === o ? n : p))}
+              selectEditMode={selectEditMode}
+              onExitSelectMode={() => setSelectEditMode(false)}
+            />
           ) : (
             <CodePreview />
           )}
@@ -424,6 +433,8 @@ export default function GeneratingPage() {
               isFinished={isFinished}
               elapsedTime={elapsedTime}
               onNewVersion={handleNewVersion}
+              selectEditMode={selectEditMode}
+              onToggleSelectMode={() => setSelectEditMode(v => !v)}
             />
           </div>
         )}
